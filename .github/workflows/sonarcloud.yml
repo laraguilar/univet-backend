@@ -57,7 +57,7 @@ jobs:
             # mandatory
             -Dsonar.projectKey=laraguilar_univet-backend
             -Dsonar.organization=laraguilar
-            -Dsonar.sources=src #optional, default is project base directory
+            # -Dsonar.sources=src #optional, default is project base directory
             # Comma-separated paths to directories containing main source files.
             # Comma-separated paths to directories containing test source files.
             #-Dsonar.tests= # optional. For more info about Code Coverage, please refer to https://docs.sonarcloud.io/enriching/test-coverage/overview/
