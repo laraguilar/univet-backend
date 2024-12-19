@@ -1,0 +1,47 @@
+name: CI for NestJS
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+      # Checkout do repositório
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Configuração do Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+     
+
+      # Instalação de dependências
+      - name: Install dependencies
+        run: yarn 
+
+      # Linting do código
+      - name: Run Linter
+        run: yarn lint
+
+      # Execução dos testes
+      - name: Run Unit Tests
+        run: yarn test
+        env:
+          CI: true
+
+
+      # Build da aplicação
+      - name: Build application
+        run: yarn build
