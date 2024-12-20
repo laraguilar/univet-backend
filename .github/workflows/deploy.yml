@@ -1,0 +1,21 @@
+name: Deploy Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Notify Discord
+      if: always() # Enviar notificação mesmo se outros passos falharem
+      run: |
+        curl -X POST -H "Content-Type: application/json" \
+        -d '{"content": "🚀 Um novo deploy foi realizado com sucesso no projeto!"}' \
+        ${{ secrets.DISCORD_WEBHOOK_URL }}
