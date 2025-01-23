@@ -25,15 +25,17 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-     
-
       # Instalação de dependências
       - name: Install dependencies
         run: npm install 
 
-      # Migrate models
-      - name: Run Migrations
-        run: npm run migrate:test
+      # Configuração do banco de dados para testes
+      - name: Set test database
+        run: echo "DATABASE_URL=file:./test.db" >> .env.test
+
+      # Criar o banco e aplicar o schema
+      - name: Prepare test database
+        run: npx prisma db push --schema=prisma/schema.prisma --skip-generate
 
       # Linting do código
       - name: Run Linter
@@ -44,7 +46,7 @@ jobs:
         run: npm run test:unit
         env:
           CI: true
-
+          DATABASE_URL: "file:./test.db"
 
       # Build da aplicação
       - name: Build application
