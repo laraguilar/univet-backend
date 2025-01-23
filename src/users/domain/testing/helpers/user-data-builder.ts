@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker'
 import { UserProps } from '../../entities/user.entity'
 
 type Props = {
+  id?: number
   name?: string
   email?: string
   password?: string
