@@ -23,6 +23,17 @@ export class PetEntity extends Entity<PetProps> {
   }
 
   // Methods
+
+  // Função de atualização generalista
+  update<K extends keyof PetProps>(key: K, value: PetProps[K]): void {
+    // Valida a atualização
+    const updatedProps = { ...this.props, [key]: value }
+    PetEntity.validate(updatedProps)
+
+    // Atualiza a propriedade da entidade
+    this.props[key] = value
+  }
+
   updateName(value: string): void {
     PetEntity.validate({ ...this.props, name: value })
     this.name = value
