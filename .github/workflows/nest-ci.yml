@@ -10,6 +10,21 @@ jobs:
   build:
     runs-on: ubuntu-24.04
 
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U test -d test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     strategy:
       matrix:
         node-version: [18.x, 20.x]
@@ -25,23 +40,44 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-     
-
       # Instalação de dependências
       - name: Install dependencies
-        run: yarn 
+        run: npm install 
+
+      # Configuração do banco de dados para testes
+      - name: Set DATABASE_URL for PostgreSQL
+        run: echo "DATABASE_URL=postgresql://test:test@localhost:5432/test" >> .env.test
+
+      # Aguardar o banco de dados estar pronto
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          for i in {1..10}; do
+            pg_isready -h localhost -p 5432 -U test -d test && break || sleep 2
+          done
+        env:
+          PGPASSWORD: test
+
+      # Criar o banco e aplicar o schema
+      - name: Prepare test database
+        run: npx prisma db push --schema=./src/shared/infrastructure/database/prisma/schema.prisma --skip-generate
+        env:
+          DATABASE_URL: "postgresql://test:test@localhost:5432/test"
+
+      # Gerar o cliente Prisma
+      - name: Generate Prisma Client
+        run: npx prisma generate --schema=./src/shared/infrastructure/database/prisma/schema.prisma
 
       # Linting do código
       - name: Run Linter
-        run: yarn lint
+        run: npm run lint
 
       # Execução dos testes
       - name: Run Unit Tests
-        run: yarn test
+        run: npm run test:unit
         env:
           CI: true
-
+          DATABASE_URL: "postgresql://test:test@localhost:5432/test"
 
       # Build da aplicação
       - name: Build application
-        run: yarn build
+        run: npm run build
