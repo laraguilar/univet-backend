@@ -29,19 +29,19 @@ jobs:
 
       # Instalação de dependências
       - name: Install dependencies
-        run: yarn 
+        run: npm install 
 
       # Linting do código
       - name: Run Linter
-        run: yarn lint
+        run: npm run lint
 
       # Execução dos testes
       - name: Run Unit Tests
-        run: yarn test:unit
+        run: npm run test:unit
         env:
           CI: true
 
 
       # Build da aplicação
       - name: Build application
-        run: yarn build
+        run: npm run build
