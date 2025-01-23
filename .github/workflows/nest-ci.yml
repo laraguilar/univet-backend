@@ -30,13 +30,17 @@ jobs:
         run: npm install 
 
       # Configuração do banco de dados para testes
-      - name: Set test database
+      - name: Set DATABASE_URL for testing
         run: echo "DATABASE_URL=file:./test.db" >> .env.test
+        env:
+          DATABASE_URL: "file:./test.db"
 
       # Criar o banco e aplicar o schema
       - name: Prepare test database
         run: npx prisma db push --schema=./src/shared/infrastructure/database/prisma/schema.prisma --skip-generate
-        
+        env:
+          DATABASE_URL: "file:./test.db"
+
       # Linting do código
       - name: Run Linter
         run: npm run lint
