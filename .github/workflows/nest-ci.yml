@@ -37,7 +37,7 @@ jobs:
 
       # Execução dos testes
       - name: Run Unit Tests
-        run: yarn test
+        run: yarn test:unit
         env:
           CI: true
 
