@@ -53,7 +53,7 @@ describe('UserEntity unit tests', () => {
   })
 
   //CreateAt -------------------------------->
-  it('Getter of createdat field', () => {
+  it('Getter of createdAt field', () => {
     expect(sut.createdAt).toBeDefined()
     expect(sut.createdAt).toBeInstanceOf(Date)
   })

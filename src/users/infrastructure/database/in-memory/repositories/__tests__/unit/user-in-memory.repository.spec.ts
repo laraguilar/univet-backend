@@ -79,7 +79,7 @@ describe('UserInMemoryRepository unit tests', () => {
       ),
     ]
     const itemsSorted = await sut['applySort'](items, null, null)
-    expect(itemsSorted).toStrictEqual([items[0], items[1], items[2]])
+    expect(itemsSorted).toStrictEqual([items[2], items[1], items[0]])
   })
 
   it('Should sort by name field', async () => {

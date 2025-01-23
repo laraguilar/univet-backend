@@ -55,15 +55,16 @@ describe('ListUsersUseCase unit tests', () => {
   it('execute method', async () => {
     const createdAt = new Date()
     const items = [
-      new UserEntity(UserDataBuilder({ createdAt: createdAt })),
+      new UserEntity(UserDataBuilder({ createdAt }), 1),
       new UserEntity(
-        UserDataBuilder({ createdAt: new Date(createdAt.getTime() + 1) }),
+        UserDataBuilder({ createdAt: new Date(createdAt.getTime() + 10) }),
+        2,
       ),
     ]
     repository.setItems(items)
     const output = await sut.execute({})
     expect(output).toStrictEqual({
-      items: [...items].map(item => item.toJSON()),
+      items: [...items].reverse().map(item => item.toJSON()),
       total: 2,
       currentPage: 1,
       lastPage: 1,

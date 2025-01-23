@@ -144,7 +144,7 @@ describe('UserModelMapper integration tests', () => {
 
   describe('search method tests', () => {
     it('should apply only pagination when the other params are null', async () => {
-      const createdat = new Date()
+      const createdAt = new Date()
       const entities: UserEntity[] = []
       const arrange = Array(16).fill(UserDataBuilder({}))
       arrange.forEach((element, index) => {
@@ -152,7 +152,7 @@ describe('UserModelMapper integration tests', () => {
           new UserEntity({
             ...element,
             email: `test${index}@mail.com`,
-            createdat: new Date(createdat.getTime() + index),
+            createdAt: new Date(createdAt.getTime() + index),
           }),
         )
       })
@@ -175,14 +175,14 @@ describe('UserModelMapper integration tests', () => {
     })
 
     it('should search using filter, sort and paginate', async () => {
-      const createdat = new Date()
+      const createdAt = new Date()
       const entities: UserEntity[] = []
       const arrange = ['test', 'a', 'TEST', 'b', 'TeSt']
       arrange.forEach((element, index) => {
         entities.push(
           new UserEntity({
             ...UserDataBuilder({ name: element }),
-            createdat: new Date(createdat.getTime() + index),
+            createdAt: new Date(createdAt.getTime() + index),
           }),
         )
       })

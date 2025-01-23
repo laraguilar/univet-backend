@@ -21,7 +21,7 @@ describe('UserModelMapper integration tests', () => {
       name: 'Test name',
       email: 'a@a.com',
       password: 'TestPassword123',
-      createdat: new Date(),
+      createdAt: new Date(),
     }
   })
 

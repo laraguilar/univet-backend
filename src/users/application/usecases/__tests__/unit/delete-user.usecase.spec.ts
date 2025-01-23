@@ -1,5 +1,5 @@
 import { UserInMemoryRepository } from '@/users/infrastructure/database/in-memory/repositories/user-in-memory.repository'
-import { DeleteUserUseCase } from '../../Delete-user.usecase'
+import { DeleteUserUseCase } from '../../delete-user.usecase'
 import { NotFoundError } from '@/shared/domain/errors/not-found-error'
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder'
 import { UserEntity } from '@/users/domain/entities/user.entity'
@@ -21,7 +21,7 @@ describe('DeleteUserUseCase unit tests', () => {
 
   it('Should delete a user', async () => {
     const spyDelete = jest.spyOn(repository, 'delete')
-    const items = [new UserEntity(UserDataBuilder({}))]
+    const items = [new UserEntity(UserDataBuilder({}), 1)]
     repository.setItems(items)
 
     await sut.execute({ id: items[0]._id })
