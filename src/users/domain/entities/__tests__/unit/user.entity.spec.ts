@@ -16,7 +16,7 @@ describe('UserEntity unit tests', () => {
     expect(sut.props.name).toEqual(props.name)
     expect(sut.props.email).toEqual(props.email)
     expect(sut.props.password).toEqual(props.password)
-    expect(sut.props.createdat).toBeInstanceOf(Date)
+    expect(sut.props.createdAt).toBeInstanceOf(Date)
   })
 
   //Name -------------------------------->
@@ -54,8 +54,8 @@ describe('UserEntity unit tests', () => {
 
   //CreateAt -------------------------------->
   it('Getter of createdat field', () => {
-    expect(sut.createdat).toBeDefined()
-    expect(sut.createdat).toBeInstanceOf(Date)
+    expect(sut.createdAt).toBeDefined()
+    expect(sut.createdAt).toBeInstanceOf(Date)
   })
 
   it('Should update a user', () => {

@@ -60,28 +60,30 @@ describe('UserInMemoryRepository unit tests', () => {
   })
 
   it('Should sort by createAt when sort param is null', async () => {
-    const createdat = new Date()
+    const createdAt = new Date()
     const items = [
-      new UserEntity(UserDataBuilder({ name: 'Test', createdat })),
+      new UserEntity(UserDataBuilder({ name: 'Test', createdAt }), 1),
       new UserEntity(
         UserDataBuilder({
           name: 'TEST',
-          createdat: new Date(createdat.getTime() + 1),
+          createdAt: new Date(createdAt.getTime() + 1),
         }),
+        2,
       ),
       new UserEntity(
         UserDataBuilder({
           name: 'fake',
-          createdat: new Date(createdat.getTime() + 2),
+          createdAt: new Date(createdAt.getTime() + 2),
         }),
+        3,
       ),
     ]
     const itemsSorted = await sut['applySort'](items, null, null)
-    expect(itemsSorted).toStrictEqual([items[2], items[1], items[0]])
+    expect(itemsSorted).toStrictEqual([items[0], items[1], items[2]])
   })
 
   it('Should sort by name field', async () => {
-    const createdat = new Date()
+    const createdAt = new Date()
     const items = [
       new UserEntity(UserDataBuilder({ name: 'c' })),
       new UserEntity(

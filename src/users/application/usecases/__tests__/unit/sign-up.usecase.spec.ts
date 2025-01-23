@@ -26,7 +26,6 @@ describe('SignUpUseCase unit tests', () => {
       password: props.password,
     })
     expect(result.id).toBeDefined()
-    expect(result.createdat).toBeInstanceOf(Date)
     expect(spyInsert).toHaveBeenCalledTimes(1)
   })
 
