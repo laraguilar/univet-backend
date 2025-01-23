@@ -65,7 +65,7 @@ jobs:
 
       # Gerar o cliente Prisma
       - name: Generate Prisma Client
-        run: npx prisma generate
+        run: npx prisma generate --schema=./src/shared/infrastructure/database/prisma/schema.prisma
 
       # Linting do código
       - name: Run Linter
