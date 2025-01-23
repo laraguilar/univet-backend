@@ -63,6 +63,10 @@ jobs:
         env:
           DATABASE_URL: "postgresql://test:test@localhost:5432/test"
 
+      # Gerar o cliente Prisma
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
       # Linting do código
       - name: Run Linter
         run: npm run lint
