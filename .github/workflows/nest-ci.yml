@@ -35,8 +35,8 @@ jobs:
 
       # Criar o banco e aplicar o schema
       - name: Prepare test database
-        run: npx prisma db push --schema=prisma/schema.prisma --skip-generate
-
+        run: npx prisma db push --schema=./src/shared/infrastructure/database/prisma/schema.prisma --skip-generate
+        
       # Linting do código
       - name: Run Linter
         run: npm run lint
