@@ -5,9 +5,12 @@ import { EnvConfigModule } from './shared/infrastructure/env-config/env-config.m
 import { UsersModule } from './users/infrastructure/users.module'
 import { AuthService } from './auth/infrastructure/auth.service'
 import { AuthModule } from './auth/infrastructure/auth.module'
+import { AnimalsModule } from './animals/infrastructure/animals.module';
+import { PetsModule } from './pets/pets.module';
+import { AnimalsModule } from './animals/infrastructure/animals.module';
 
 @Module({
-  imports: [EnvConfigModule, UsersModule, AuthModule],
+  imports: [EnvConfigModule, UsersModule, AuthModule, AnimalsModule, PetsModule],
   controllers: [AppController],
   providers: [AppService],
 })
