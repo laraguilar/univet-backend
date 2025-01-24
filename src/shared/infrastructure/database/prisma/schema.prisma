@@ -13,4 +13,20 @@ model User {
   name      String?
   password  String
   createdAt DateTime @default(now())
+  pets      Pet[]    @relation("UserPets")
+}
+
+model Pet {
+  id        Int      @id @default(autoincrement())
+  name      String
+  species   String
+  breed     String?
+  birthDate DateTime
+  weight    Float?
+  createdAt DateTime @default(now())
+  ownerId   Int
+  owner     User     @relation("UserPets", fields: [ownerId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_ownerid_user")
+
+  // Optional: Age calculation (can be done in the code or as a computed field)
+  // age      Int      @default(0)  // You can add an age field if needed, but it's typically calculated dynamically
 }
