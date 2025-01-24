@@ -7,6 +7,7 @@ export type PetOutput = {
   breed: string
   birthDate: Date
   ownerId: number
+  weight: number
 }
 
 export class PetOutputMapper {

@@ -2,7 +2,7 @@ import { BadRequestError } from '../../../shared/application/errors/bad-request-
 import { PetEntity } from '@/pets/domain/entities/pet.entity'
 import { PetRepository } from '@/pets/domain/repositories/pet.repository'
 import { UseCase as DefaultUseCase } from '@/shared/application/usecases/use-case'
-import { PetOutputMapper } from '../dtos/pet-output'
+import { PetOutput, PetOutputMapper } from '../dtos/pet-output'
 
 export namespace CreatePetUseCase {
   export type Input = {
@@ -13,14 +13,7 @@ export namespace CreatePetUseCase {
     ownerId: number
   }
 
-  export type Output = {
-    id: number
-    name: string
-    species: string
-    breed: string
-    birthDate: Date
-    ownerId: number
-  }
+  export type Output = PetOutput
 
   export class UseCase implements DefaultUseCase<Input, Output> {
     constructor(private readonly petRepository: PetRepository.Repository) {}

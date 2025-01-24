@@ -1,10 +1,19 @@
+import { UseCase as DefaultUseCase } from '@/shared/application/usecases/use-case'
 import { PetRepository } from '@/pets/domain/repositories/pet.repository'
-import { NotFoundError } from '@/shared/domain/errors/not-found-error'
 
-export class DeletePetUseCase {
-  constructor(private petRepository: PetRepository.Repository) {}
+export namespace DeletePetUseCase {
+  export type Input = {
+    id: number
+  }
 
-  async execute(petId: number): Promise<void> {
-    await this.petRepository.delete(petId)
+  export type Output = void
+
+  export class UseCase implements DefaultUseCase<Input, Output> {
+    constructor(private readonly petRepository: PetRepository.Repository) {}
+
+    async execute(input: Input): Promise<Output> {
+      const { id } = input
+      await this.petRepository.delete(id)
+    }
   }
 }
