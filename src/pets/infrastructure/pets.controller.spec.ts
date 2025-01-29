@@ -7,6 +7,7 @@ import { UpdatePetUseCase } from '../application/usecases/update-pet.usecase'
 import { DeletePetUseCase } from '../application/usecases/delete-pet.usecase'
 import { GetPetsByOwnerUseCase } from '../application/usecases/get-pets-by-owner'
 import { PetOutput } from '../application/dtos/pet-output'
+import { UpdatePetDto } from './dtos/update-pet.dto'
 
 describe('PetsController', () => {
   let controller: PetsController
@@ -177,40 +178,84 @@ describe('PetsController', () => {
     })
   })
 
-  // describe('update', () => {
-  //   it('should update a pet', async () => {
-  //     const petId = 1
+  describe('update', () => {
+    it('should update a pet', async () => {
+      const petId = 1
+      const updatePetDto = {
+        id: petId,
+        name: 'Buddy Updated',
+        breed: 'Labrador Retriever',
+        weight: 20,
+      }
+      const updatedPetOutput: PetOutput = {
+        id: petId,
+        name: 'Buddy Updated',
+        species: 'Dog',
+        breed: 'Labrador Retriever',
+        birthDate: new Date('2020-01-01'),
+        ownerId: 1,
+        weight: 20,
+      }
 
-  //     // Assuming the UpdatePetDto requires key-value pairs
-  //     const updatePetDto = {
-  //       key: 'name',
-  //       value: 'Buddy',
-  //     }
+      jest
+        .spyOn(updatePetUseCase, 'execute')
+        .mockResolvedValue(updatedPetOutput)
 
-  //     const updatedPetOutput = { id: petId, ...updatePetDto, weight: 4.5 }
+      const result = await controller.update(petId, updatePetDto)
 
-  //     jest
-  //       .spyOn(updatePetUseCase, 'execute')
-  //       .mockResolvedValue(updatedPetOutput)
+      // Verifica se o resultado contém os campos esperados
+      expect(result).toEqual({
+        id: petId,
+        name: 'Buddy Updated',
+        species: 'Dog',
+        breed: 'Labrador Retriever',
+        birthDate: expect.any(Date),
+        ownerId: 1,
+        weight: 20,
+      })
 
-  //     const result = await controller.update(petId, updatePetDto)
+      // Verifica se o caso de uso foi chamado com os argumentos corretos
+      expect(updatePetUseCase.execute).toHaveBeenCalledWith({
+        id: petId,
+        name: 'Buddy Updated',
+        breed: 'Labrador Retriever',
+        weight: 20,
+      })
+    })
 
-  //     // Adjust expected result to match actual return value
-  //     expect(result).toEqual({
-  //       id: petId,
-  //       name: 'Buddy',
-  //       species: 'Dog',
-  //       breed: 'Labrador',
-  //       birthDate: expect.any(Date),
-  //       ownerId: 1,
-  //       weight: 4.5,
-  //     })
-  //     expect(updatePetUseCase.execute).toHaveBeenCalledWith({
-  //       id: petId,
-  //       ...updatePetDto,
-  //     })
-  //   })
-  // })
+    it('should throw an error if pet ID is not provided', async () => {
+      const updatePetDto = {
+        name: 'Buddy Updated',
+        breed: 'Labrador Retriever',
+        weight: 20,
+      }
+
+      await expect(controller.update(undefined, updatePetDto)).rejects.toThrow(
+        "Cannot read properties of undefined (reading 'id')",
+      )
+    })
+
+    it('should throw an error if pet does not exist', async () => {
+      const petId = 999
+      const updatePetDto: UpdatePetDto = {
+        name: 'Non-existent Pet',
+        breed: undefined,
+        weight: undefined,
+      }
+
+      jest
+        .spyOn(updatePetUseCase, 'execute')
+        .mockRejectedValue(new Error('Pet not found'))
+
+      await expect(controller.update(petId, updatePetDto)).rejects.toThrow(
+        'Pet not found',
+      )
+      expect(updatePetUseCase.execute).toHaveBeenCalledWith({
+        id: petId,
+        name: 'Non-existent Pet',
+      })
+    })
+  })
 
   describe('remove', () => {
     it('should delete a pet', async () => {

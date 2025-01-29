@@ -25,13 +25,16 @@ export class PetEntity extends Entity<PetProps> {
   // Methods
 
   // Função de atualização generalista
-  update<K extends keyof PetProps>(key: K, value: PetProps[K]): void {
+  update(props: Partial<PetProps>): void {
     // Valida a atualização
-    const updatedProps = { ...this.props, [key]: value }
+    const updatedProps = { ...this.props, ...props }
     PetEntity.validate(updatedProps)
 
-    // Atualiza a propriedade da entidade
-    this.props[key] = value
+    Object.keys(props).forEach(key => {
+      if (props[key] !== undefined && props[key] !== null) {
+        this.props[key] = props[key]
+      }
+    })
   }
 
   updateName(value: string): void {
@@ -114,8 +117,11 @@ export class PetEntity extends Entity<PetProps> {
 
   // Validation
   static validate(props: PetProps) {
+    console.log('Pets - validate', props)
+
     const validator = PetValidatorFactory.create()
     const isValid = validator.validate(props)
+    console.log(validator.errors)
     if (!isValid) {
       throw new EntityValidationError(validator.errors)
     }

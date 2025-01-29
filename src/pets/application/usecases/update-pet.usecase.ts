@@ -5,8 +5,9 @@ import { PetOutput, PetOutputMapper } from '../dtos/pet-output'
 export namespace UpdatePetUseCase {
   export type Input = {
     id: number
-    key: string
-    value: string | number
+    name?: string
+    breed?: string
+    weight?: number
   }
 
   export type Output = PetOutput
@@ -15,14 +16,23 @@ export namespace UpdatePetUseCase {
     constructor(private readonly petRepository: PetRepository.Repository) {}
 
     async execute(input: Input): Promise<Output> {
-      const { id, key, value } = input
-      // Busca o pet pelo ID
-      if (!id || !key || !value) {
-        throw new Error('Input data not provided')
+      const { id, name, breed, weight } = input
+      console.log('UPDATE Pets - input', input)
+      // Validação do ID
+      if (!id) {
+        throw new Error('Pet ID is required')
       }
 
+      // Busca o pet pelo ID
       const entity = await this.petRepository.findById(id)
-      entity.update(key as keyof PetProps, value)
+
+      // Atualiza somente os campos fornecidos
+      const updatedProps: Partial<PetProps> = {}
+      if (name) updatedProps.name = name
+      if (breed) updatedProps.breed = breed
+      if (weight) updatedProps.weight = weight
+
+      entity.update(updatedProps)
       await this.petRepository.update(entity)
 
       return PetOutputMapper.toOutput(entity)

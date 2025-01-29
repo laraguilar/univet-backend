@@ -64,7 +64,10 @@ export class PetPrismaRepository implements PetRepository.Repository {
   }
 
   async insert(entity: PetEntity): Promise<PetEntity> {
+    console.log('CREATE Pets - prisma entity', entity)
+
     const { id, ownerId, ...entityWithoutId } = entity.toJSON() // Extract ownerId separately to use in the connect
+    console.log('CREATE Pets - entity without id', entityWithoutId)
 
     const newPet = await this.prismaService.pet.create({
       data: {
@@ -107,7 +110,7 @@ export class PetPrismaRepository implements PetRepository.Repository {
   protected async _getById(id: number): Promise<PetEntity> {
     try {
       const pet = await this.prismaService.pet.findUnique({
-        where: { id: id },
+        where: { id },
       })
 
       return PetModelMapper.toEntity(pet)

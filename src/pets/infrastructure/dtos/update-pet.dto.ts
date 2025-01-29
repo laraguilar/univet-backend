@@ -1,14 +1,17 @@
 import { PartialType } from '@nestjs/swagger'
 import { CreatePetDto } from './create-pet.dto'
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator'
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator'
 
 export class UpdatePetDto {
   @IsString()
-  @IsNotEmpty()
-  key: string
+  @IsOptional()
+  name: string
 
-  @IsNotEmpty()
   @IsString()
+  @IsOptional()
+  breed: string
+
   @IsNumber()
-  value: string | number
+  @IsOptional()
+  weight: number
 }

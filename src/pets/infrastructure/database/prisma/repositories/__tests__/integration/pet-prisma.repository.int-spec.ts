@@ -124,20 +124,31 @@ describe('PetPrismaRepository Integration Tests', () => {
       data: userProps,
     })
     const ownerId = userModel.id
-    const entity = new PetEntity(PetDataBuilder({ ownerId }), 1)
 
+    const entity = new PetEntity(PetDataBuilder({ ownerId }), 10)
     const newPet = await prismaService.pet.create({
       data: entity.toJSON(),
     })
-    entity.update('name', 'new name')
+
+    // Atualiza o nome da entidade
+    const updatedName = 'Updated Pet Name'
+    entity.update({ name: updatedName })
     await sut.update(entity)
 
+    // Busca o pet atualizado no banco
     const output = await prismaService.pet.findUnique({
       where: {
         id: entity._id,
       },
     })
-    expect(output.name).toBe('new name')
+
+    // Verifica se os dados foram atualizados corretamente
+    expect(output).toMatchObject({
+      id: newPet.id,
+      name: updatedName,
+      ownerId: newPet.ownerId,
+    })
+    expect(output?.name).toBe(updatedName)
   })
 
   it('should throw error on delete when entity not found', async () => {

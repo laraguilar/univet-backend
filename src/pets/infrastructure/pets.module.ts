@@ -9,6 +9,8 @@ import { GetPetUseCase } from '../application/usecases/get-pet.usecase'
 import { GetPetsByOwnerUseCase } from '../application/usecases/get-pets-by-owner'
 import { ListPetsUseCase } from '../application/usecases/list-pets.usecase'
 import { UpdatePetUseCase } from '../application/usecases/update-pet.usecase'
+import { UserRepository } from '@/users/domain/repositories/user.repository'
+import { UserPrismaRepository } from '@/users/infrastructure/database/prisma/repositories/user-prisma.repository'
 
 @Module({
   controllers: [PetsController],
@@ -25,11 +27,21 @@ import { UpdatePetUseCase } from '../application/usecases/update-pet.usecase'
       inject: ['PrismaService'],
     },
     {
-      provide: CreatePetUseCase.UseCase,
-      useFactory: (petRepository: PetRepository.Repository) => {
-        return new CreatePetUseCase.UseCase(petRepository)
+      provide: 'UserRepository',
+      useFactory: (prismaService: PrismaService) => {
+        return new UserPrismaRepository(prismaService)
       },
-      inject: ['PetRepository'],
+      inject: ['PrismaService'],
+    },
+    {
+      provide: CreatePetUseCase.UseCase,
+      useFactory: (
+        petRepository: PetRepository.Repository,
+        userRepository: UserRepository.Repository,
+      ) => {
+        return new CreatePetUseCase.UseCase(petRepository, userRepository)
+      },
+      inject: ['PetRepository', 'UserRepository'],
     },
     {
       provide: DeletePetUseCase.UseCase,

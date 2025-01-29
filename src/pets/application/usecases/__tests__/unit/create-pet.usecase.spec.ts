@@ -2,19 +2,28 @@ import { CreatePetUseCase } from '../../create-pet.usecase'
 import { PetDataBuilder } from '@/pets/domain/testing/helpers/pet-data-builder'
 import { PetInMemoryRepository } from '@/pets/infrastructure/database/in-memory/repositories/pet-in-memory.repository'
 import { BadRequestError } from '@/shared/application/errors/bad-request-error'
+import { UserEntity } from '@/users/domain/entities/user.entity'
+import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder'
+import { UserInMemoryRepository } from '@/users/infrastructure/database/in-memory/repositories/user-in-memory.repository'
 
 describe('CreatePetUseCase unit tests', () => {
   let sut: CreatePetUseCase.UseCase
   let repository: PetInMemoryRepository
+  let userRepository: UserInMemoryRepository
 
   beforeEach(() => {
     repository = new PetInMemoryRepository()
-    sut = new CreatePetUseCase.UseCase(repository)
+    userRepository = new UserInMemoryRepository()
+    sut = new CreatePetUseCase.UseCase(repository, userRepository)
   })
 
   it('Should create a pet', async () => {
     const spyInsert = jest.spyOn(repository, 'insert')
-    const props = PetDataBuilder({})
+
+    const user = new UserEntity(UserDataBuilder({ name: 'John Doe' }), 1)
+    await userRepository.insert(user)
+
+    const props = PetDataBuilder({ ownerId: user.id })
     const result = await sut.execute({
       name: props.name,
       species: props.species,
@@ -23,6 +32,25 @@ describe('CreatePetUseCase unit tests', () => {
       ownerId: props.ownerId,
     })
     expect(result.id).toBeDefined()
+    expect(spyInsert).toHaveBeenCalledTimes(1)
+  })
+
+  it('Should create a pet with weight', async () => {
+    const spyInsert = jest.spyOn(repository, 'insert')
+    const user = new UserEntity(UserDataBuilder({ name: 'John Doe' }), 1)
+    await userRepository.insert(user)
+
+    const props = PetDataBuilder({ ownerId: user.id })
+    const result = await sut.execute({
+      name: props.name,
+      species: props.species,
+      breed: props.breed,
+      birthDate: props.birthDate,
+      ownerId: props.ownerId,
+      weight: props.weight,
+    })
+    expect(result.id).toBeDefined()
+    expect(result.weight).toBe(props.weight)
     expect(spyInsert).toHaveBeenCalledTimes(1)
   })
 
@@ -49,8 +77,10 @@ describe('CreatePetUseCase unit tests', () => {
   // })
 
   it('Should throw error when name not provided', async () => {
-    const props = PetDataBuilder({})
+    const user = new UserEntity(UserDataBuilder({ name: 'John Doe' }), 1)
+    await userRepository.insert(user)
 
+    const props = PetDataBuilder({ ownerId: user.id })
     await expect(
       sut.execute({
         name: null,
@@ -63,7 +93,13 @@ describe('CreatePetUseCase unit tests', () => {
   })
 
   it('Should throw error when species not provided', async () => {
-    const props = Object.assign(PetDataBuilder({}), { species: null })
+    const user = new UserEntity(UserDataBuilder({ name: 'John Doe' }), 1)
+    await userRepository.insert(user)
+
+    const props = Object.assign(PetDataBuilder({ ownerId: user.id }), {
+      species: null,
+    })
+
     await expect(
       sut.execute({
         name: props.name,
@@ -76,12 +112,24 @@ describe('CreatePetUseCase unit tests', () => {
   })
 
   it('Should throw error when breed not provided', async () => {
-    const props = Object.assign(PetDataBuilder({}), { breed: null })
+    const user = new UserEntity(UserDataBuilder({ name: 'John Doe' }), 1)
+    await userRepository.insert(user)
+
+    const props = Object.assign(PetDataBuilder({ ownerId: user.id }), {
+      breed: null,
+    })
+
     await expect(sut.execute(props)).rejects.toBeInstanceOf(BadRequestError)
   })
 
   it('Should throw error when birthDate not provided', async () => {
-    const props = Object.assign(PetDataBuilder({}), { birthDate: null })
+    const user = new UserEntity(UserDataBuilder({ name: 'John Doe' }), 1)
+    await userRepository.insert(user)
+
+    const props = Object.assign(PetDataBuilder({ ownerId: user.id }), {
+      birthDate: null,
+    })
+
     await expect(
       sut.execute({
         name: props.name,
@@ -94,7 +142,13 @@ describe('CreatePetUseCase unit tests', () => {
   })
 
   it('Should throw error when ownerId not provided', async () => {
-    const props = Object.assign(PetDataBuilder({}), { ownerId: null })
+    const user = new UserEntity(UserDataBuilder({ name: 'John Doe' }), 1)
+    await userRepository.insert(user)
+
+    const props = Object.assign(PetDataBuilder({ ownerId: user.id }), {
+      ownerId: null,
+    })
+
     await expect(
       sut.execute({
         name: props.name,
