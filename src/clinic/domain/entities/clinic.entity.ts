@@ -11,6 +11,7 @@ export type ClinicProps = {
   neighborhood: string
   city: string
   state: string
+  phone?: string
   createdAt?: Date
 }
 
@@ -22,6 +23,7 @@ export class ClinicEntity extends Entity<ClinicProps> {
   neighborhood: string
   city: string
   state: string
+  phone?: string
   constructor(
     public readonly props: ClinicProps,
     id?: number,

@@ -32,6 +32,9 @@ export class ClinicPresenter {
   @ApiProperty({ description: 'Clinic State' })
   state: string
 
+  @ApiProperty({ description: 'Clinic phone' })
+  phone: string
+
   @ApiProperty({ description: 'Clinic creation date' })
   @Transform(({ value }: { value: Date }) => value.toISOString())
   createdAt: Date
@@ -46,6 +49,7 @@ export class ClinicPresenter {
     this.neighborhood = output.neighborhood
     this.city = output.city
     this.state = output.state
+    this.phone = output.phone
   }
 }
 

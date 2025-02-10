@@ -41,5 +41,6 @@ model Clinic {
   neighborhood String
   city         String
   state        String
+  phone        String?
   createdAt    DateTime @default(now())
 }

@@ -11,6 +11,7 @@ type Props = {
   neighborhood?: string
   city?: string
   state?: string
+  phone?: string
   createdAt?: Date
 }
 
@@ -24,6 +25,7 @@ export function ClinicDataBuilder(props: Props): ClinicProps {
     neighborhood: props.neighborhood ?? faker.location.secondaryAddress(),
     city: props.city ?? faker.location.city(),
     state: props.state ?? faker.location.state(),
+    phone: props.phone ?? faker.phone.number(),
     createdAt: props.createdAt ?? new Date(),
   }
 }

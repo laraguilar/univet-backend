@@ -10,6 +10,7 @@ export type ClinicOutput = {
   neighborhood: string
   city: string
   state: string
+  phone?: string
 }
 
 export class ClinicOutputMapper {

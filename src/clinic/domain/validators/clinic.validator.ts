@@ -50,6 +50,11 @@ export class ClinicRules {
   @IsOptional()
   state?: string
 
+  @MaxLength(30)
+  @IsString()
+  @IsOptional()
+  phone?: string
+
   @IsDate()
   @IsOptional()
   createdAt?: Date
@@ -63,6 +68,7 @@ export class ClinicRules {
     neighborhood,
     city,
     state,
+    phone,
     createdAt,
   }: ClinicProps) {
     Object.assign(this, {
@@ -74,6 +80,7 @@ export class ClinicRules {
       neighborhood,
       city,
       state,
+      phone,
       createdAt,
     })
   }
