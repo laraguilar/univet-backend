@@ -30,3 +30,16 @@ model Pet {
   // Optional: Age calculation (can be done in the code or as a computed field)
   // age      Int      @default(0)  // You can add an age field if needed, but it's typically calculated dynamically
 }
+
+model Clinic {
+  id           Int      @id @default(autoincrement())
+  name         String
+  cnpj         String
+  zipCode      String
+  street       String
+  number       Int
+  neighborhood String
+  city         String
+  state        String
+  createdAt    DateTime @default(now())
+}
