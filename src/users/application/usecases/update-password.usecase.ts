@@ -26,8 +26,8 @@ export namespace UpdatePasswordUseCase {
           'Old password and new password is required',
         )
       }
-     //console.log('entity', entity)
-     //console.log('password', input.oldPassword, input.password)
+      //console.log('entity', entity)
+      //console.log('password', input.oldPassword, input.password)
       const checkOldPassword = await this.hashProvider.compareHash(
         input.oldPassword,
         entity.password,
