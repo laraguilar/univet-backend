@@ -14,6 +14,7 @@ export namespace CreateClinicUseCase {
     neighborhood: string
     city: string
     state: string
+    phone?: string
   }
 
   export type Output = ClinicOutput
@@ -24,8 +25,17 @@ export namespace CreateClinicUseCase {
     ) {}
 
     async execute(input: Input): Promise<Output> {
-      const { name, cnpj, zipCode, street, number, neighborhood, city, state } =
-        input
+      const {
+        name,
+        cnpj,
+        zipCode,
+        street,
+        number,
+        neighborhood,
+        city,
+        state,
+        phone,
+      } = input
       console.log('CREATE Clinic - input', input)
 
       // Validação dos dados de entrada

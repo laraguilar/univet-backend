@@ -25,6 +25,7 @@ describe('CreateClinicUseCase unit tests', () => {
       neighborhood: props.neighborhood,
       city: props.city,
       state: props.state,
+      phone: props.phone,
     })
     expect(result.id).toBeDefined()
     expect(spyInsert).toHaveBeenCalledTimes(1)

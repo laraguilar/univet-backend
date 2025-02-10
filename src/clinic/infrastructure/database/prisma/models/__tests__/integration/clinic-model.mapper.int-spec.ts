@@ -26,6 +26,7 @@ describe('ClinicModelMapper integration tests', () => {
       neighborhood: 'Test Neighborhood',
       city: 'Test City',
       state: 'TS',
+      phone: '123456789',
       createdAt: new Date(),
     }
   })

@@ -16,6 +16,7 @@ export class ClinicModelMapper {
       neighborhood: model.neighborhood,
       city: model.city,
       state: model.state,
+      phone: model.phone,
       createdAt: model.createdAt,
     }
 
@@ -37,6 +38,7 @@ export class ClinicModelMapper {
       neighborhood: entity.neighborhood,
       city: entity.city,
       state: entity.state,
+      phone: entity.phone,
       createdAt: entity.createdAt,
     }
   }
