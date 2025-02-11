@@ -32,15 +32,26 @@ model Pet {
 }
 
 model Clinic {
-  id           Int      @id @default(autoincrement())
-  name         String
-  cnpj         String
-  zipCode      String
-  street       String
-  number       Int
-  neighborhood String
-  city         String
-  state        String
-  phone        String?
-  createdAt    DateTime @default(now())
+  id             Int              @id @default(autoincrement())
+  name           String
+  cnpj           String
+  zipCode        String
+  street         String
+  number         Int
+  neighborhood   String
+  city           String
+  state          String
+  phone          String?
+  createdAt      DateTime         @default(now())
+  ClinicSchedule ClinicSchedule[]
+}
+
+model ClinicSchedule {
+  id        Int      @id @default(autoincrement())
+  clinicId  Int
+  clinic    Clinic   @relation(fields: [clinicId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  dayOfWeek Int
+  openTime  String
+  closeTime String
+  createdAt DateTime @default(now())
 }
