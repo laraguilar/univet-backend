@@ -53,4 +53,4 @@ import { ClinicController } from './clinic.controller'
     },
   ],
 })
-export class PetsModule {}
+export class ClinicModule {}

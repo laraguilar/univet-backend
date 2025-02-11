@@ -14,15 +14,12 @@ export namespace ClinicScheduleRepository {
     Filter
   > {}
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   export interface Repository
     extends SearchableRepositoryInterface<
       ClinicScheduleEntity,
       Filter,
       SearchParams,
       SearchResult
-    > {
-    update(entity: ClinicScheduleEntity): Promise<void>
-    updateOpenTime(entity: ClinicScheduleEntity): Promise<void>
-    updateCloseTime(entity: ClinicScheduleEntity): Promise<void>
-  }
+    > {}
 }

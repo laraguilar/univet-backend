@@ -5,9 +5,18 @@ import { EnvConfigModule } from './shared/infrastructure/env-config/env-config.m
 import { UsersModule } from './users/infrastructure/users.module'
 import { AuthModule } from './auth/infrastructure/auth.module'
 import { PetsModule } from './pets/infrastructure/pets.module'
+import { ClinicScheduleModule } from './clinicschedule/infrastructure/clinic-schedule.module'
+import { ClinicModule } from './clinic/infrastructure/clinic.module'
 
 @Module({
-  imports: [EnvConfigModule, UsersModule, AuthModule, PetsModule],
+  imports: [
+    EnvConfigModule,
+    UsersModule,
+    AuthModule,
+    PetsModule,
+    ClinicModule,
+    ClinicScheduleModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
