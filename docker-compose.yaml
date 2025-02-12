@@ -3,13 +3,28 @@ version: '3.1'
 services:
   db:
     build: .
-    container_name: api-db
+    container_name: postgres
     restart: always
     tty: true
     ports:
-      - "5432:5432"
+      - '5432:5432'
     environment:
       - POSTGRES_PASSWORD=docker
       - POSTGRES_DB=projectdb
+    env_file:
+      - .env
     volumes:
       - ./docker/dbdata:/var/lib/postgresql/data
+  nest:
+    container_name: nest
+    build: ./back-end
+    restart: always
+    ports:
+      - 5001:5001
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+volumes:
+  postgres-volume:
