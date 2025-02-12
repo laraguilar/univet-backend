@@ -17,7 +17,7 @@ services:
       - ./docker/dbdata:/var/lib/postgresql/data
   nest:
     container_name: nest
-    build: ./back-end
+    build: ./
     restart: always
     ports:
       - 5001:5001
