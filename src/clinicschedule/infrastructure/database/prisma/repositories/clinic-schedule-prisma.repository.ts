@@ -11,6 +11,16 @@ export class ClinicSchedulePrismaRepository
 
   constructor(private readonly prismaService: PrismaService) {}
 
+  async listByClinicId(clinicId: number): Promise<ClinicScheduleEntity[]> {
+    const models = await this.prismaService.clinicSchedule.findMany({
+      where: {
+        clinicId,
+      },
+    })
+
+    return models.map(model => ClinicScheduleModelMapper.toEntity(model))
+  }
+
   async search(
     props: ClinicScheduleRepository.SearchParams,
   ): Promise<ClinicScheduleRepository.SearchResult> {

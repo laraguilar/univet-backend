@@ -22,6 +22,7 @@ import {
 import { CreateClinicScheduleDto } from './dtos/create-clinic-schedule.dto'
 import { UpdateClinicScheduleDto } from './dtos/update-clinic-schedule.dto'
 import { ListClinicScheduleDto } from './dtos/list-clinic-schedule.dto'
+import { ListSchedulesByClinicUseCase } from '../application/usecases/list-by-clinic.usecase'
 
 @Controller('clinic-schedule')
 export class ClinicScheduleController {
@@ -30,6 +31,9 @@ export class ClinicScheduleController {
 
   @Inject(ListClinicsScheduleUseCase.UseCase)
   private listClinicsScheduleUseCase: ListClinicsScheduleUseCase.UseCase
+
+  @Inject(ListSchedulesByClinicUseCase.UseCase)
+  private listSchedulesByClinicUseCase: ListSchedulesByClinicUseCase.UseCase
 
   @Inject(DeleteClinicScheduleUseCase.UseCase)
   private deleteClinicScheduleUseCase: DeleteClinicScheduleUseCase.UseCase
@@ -50,6 +54,12 @@ export class ClinicScheduleController {
     return new ClinicScheduleCollectionPresenter(output)
   }
 
+  clinicScheduleToResponse(output: ClinicScheduleOutput[]) {
+    return output.map(
+      clinicSchedule => new ClinicSchedulePresenter(clinicSchedule),
+    )
+  }
+
   @Post()
   async create(@Body() createClinicScheduleDto: CreateClinicScheduleDto) {
     const output = await this.createClinicScheduleUseCase.execute(
@@ -68,6 +78,16 @@ export class ClinicScheduleController {
   async findOne(@Param('id') id: number) {
     const output = await this.getClinicScheduleUseCase.execute({ id })
     return ClinicScheduleController.clinicScheduleToResponse(output)
+  }
+
+  @Get('/clinic/:clinicId')
+  async findByClinic(@Param('clinicId') clinicId: number) {
+    const outputs = await this.listSchedulesByClinicUseCase.execute({
+      clinicId,
+    })
+    return outputs.map(output =>
+      ClinicScheduleController.clinicScheduleToResponse(output),
+    )
   }
 
   @Patch(':id')
