@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Instala TODAS as dependências (incluindo devDependencies necessárias para build)
-RUN npm install
+RUN npm install --only=dev
 
 # Copia o resto dos arquivos do projeto
 COPY . .
@@ -15,7 +15,7 @@ RUN npm run build
 
 # Stage de produção
 FROM node:20-alpine
-WORKDIR /app
+WORKDIR /
 
 # Copia package.json e package-lock.json
 COPY package*.json ./
@@ -24,7 +24,7 @@ COPY package*.json ./
 RUN npm install --production
 
 # Copia a pasta dist do builder
-COPY --from=builder /app/dist ./dist
+COPY --from=builder /dist ./dist
 
 EXPOSE 5001
 
