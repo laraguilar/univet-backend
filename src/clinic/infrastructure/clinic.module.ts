@@ -7,6 +7,7 @@ import { GetClinicUseCase } from '../application/usecases/get-clinic.usecase'
 import { ListClinicsUseCase } from '../application/usecases/list-clinics.usecase'
 import { ClinicPrismaRepository } from './database/prisma/repositories/clinic-prisma.repository'
 import { ClinicController } from './clinic.controller'
+import { UserPrismaRepository } from '@/users/infrastructure/database/prisma/repositories/user-prisma.repository'
 
 @Module({
   controllers: [ClinicController],
@@ -19,6 +20,13 @@ import { ClinicController } from './clinic.controller'
       provide: 'ClinicRepository',
       useFactory: (prismaService: PrismaService) => {
         return new ClinicPrismaRepository(prismaService)
+      },
+      inject: ['PrismaService'],
+    },
+    {
+      provide: 'UserRepository',
+      useFactory: (prismaService: PrismaService) => {
+        return new UserPrismaRepository(prismaService)
       },
       inject: ['PrismaService'],
     },
