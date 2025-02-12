@@ -8,6 +8,7 @@ import { DeleteClinicScheduleUseCase } from '../application/usecases/delete-clin
 import { GetClinicScheduleUseCase } from '../application/usecases/get-clinic-schedule.usecase'
 import { UpdateClinicScheduleUseCase } from '../application/usecases/update-clinic-schedule.usecase'
 import { ListClinicsScheduleUseCase } from '../application/usecases/list-clinics-schedule.usecase'
+import { ListSchedulesByClinicUseCase } from '../application/usecases/list-by-clinic.usecase'
 
 @Module({
   controllers: [ClinicScheduleController],
@@ -56,6 +57,17 @@ import { ListClinicsScheduleUseCase } from '../application/usecases/list-clinics
         clinicScheduleRepository: ClinicScheduleRepository.Repository,
       ) => {
         return new ListClinicsScheduleUseCase.UseCase(clinicScheduleRepository)
+      },
+      inject: ['ClinicScheduleRepository'],
+    },
+    {
+      provide: ListSchedulesByClinicUseCase.UseCase,
+      useFactory: (
+        clinicScheduleRepository: ClinicScheduleRepository.Repository,
+      ) => {
+        return new ListSchedulesByClinicUseCase.UseCase(
+          clinicScheduleRepository,
+        )
       },
       inject: ['ClinicScheduleRepository'],
     },
