@@ -52,6 +52,10 @@ export class PetsController {
     return new PetCollectionPresenter(output)
   }
 
+  static petsToResponse(output: PetOutput[]) {
+    return output.map(pet => new PetPresenter(pet))
+  }
+
   @Post()
   async create(@Body() createPetDto: CreatePetDto) {
     const output = await this.createPetUseCase.execute(createPetDto)
@@ -68,6 +72,12 @@ export class PetsController {
   async findOne(@Param('id') id: number) {
     const output = await this.getPetUseCase.execute({ id })
     return PetsController.petToResponse(output)
+  }
+
+  @Get('/owner/:ownerId')
+  async findByOwner(@Param('ownerId') ownerId: number) {
+    const output = await this.getPetsByOwnerUseCase.execute({ ownerId })
+    return PetsController.petsToResponse(output) // Agora funciona!
   }
 
   @Patch(':id')

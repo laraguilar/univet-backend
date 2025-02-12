@@ -9,6 +9,16 @@ export class ClinicScheduleInMemoryRepository
   extends InMemorySearchableRepository<ClinicScheduleEntity>
   implements ClinicScheduleRepository.Repository
 {
+  async listByClinicId(clinicId: number): Promise<ClinicScheduleEntity[]> {
+    const items = await this.getItems() // Aguarda os itens antes de filtrar
+    const entities = items.filter(item => item.props.clinicId === clinicId)
+
+    if (entities.length === 0) {
+      throw new NotFoundError(`Schedules not found using clinicId: ${clinicId}`)
+    }
+
+    return entities
+  }
   sortableFields: string[] = ['dayOfWeek']
 
   async updateOpenTime(entity: ClinicScheduleEntity): Promise<void> {

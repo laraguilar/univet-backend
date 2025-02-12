@@ -21,5 +21,7 @@ export namespace ClinicScheduleRepository {
       Filter,
       SearchParams,
       SearchResult
-    > {}
+    > {
+    listByClinicId(clinicId: number): Promise<ClinicScheduleEntity[]>
+  }
 }
