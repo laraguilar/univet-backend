@@ -1,34 +1,31 @@
-# Etapa 1: Builder (Construção da Aplicação)
 FROM node:20-alpine AS builder
-
 WORKDIR /app
 
-# Copia apenas os arquivos necessários para a instalação de dependências
-COPY package.json package-lock.json ./
-RUN npm install --only=production
+# Copia package.json e package-lock.json
+COPY package*.json ./
 
-# Copia o restante dos arquivos
+# Instala TODAS as dependências (incluindo devDependencies necessárias para build)
+RUN npm install
+
+# Copia o resto dos arquivos do projeto
 COPY . .
 
-# Garante que a build do NestJS seja feita corretamente
+# Executa o build
 RUN npm run build
 
-# Etapa 2: Produção
-FROM node:20-alpine AS runner
-
+# Stage de produção
+FROM node:20-alpine
 WORKDIR /app
 
-# Copia as dependências já instaladas
-COPY --from=builder /app/node_modules ./node_modules
+# Copia package.json e package-lock.json
+COPY package*.json ./
 
-# Copia a pasta dist (código compilado)
+# Instala apenas as dependências de produção
+RUN npm install --production
+
+# Copia a pasta dist do builder
 COPY --from=builder /app/dist ./dist
 
-# Copia os arquivos de configuração necessários
-COPY package.json ./
-
-# Exposição da porta que o NestJS usa
 EXPOSE 5001
 
-# Comando de inicialização do NestJS
 CMD ["node", "dist/main"]
