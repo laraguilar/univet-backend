@@ -1,31 +1,38 @@
-FROM node:20-alpine AS builder
-WORKDIR /app
+# Build stage
+FROM node:18-alpine AS builder
 
-# Copia package.json e package-lock.json
-COPY package*.json ./
-
-# Instala TODAS as dependências (incluindo devDependencies necessárias para build)
-RUN npm install --only=dev
-
-# Copia o resto dos arquivos do projeto
-COPY . .
-
-# Executa o build
-RUN npm run build
-
-# Stage de produção
-FROM node:20-alpine
+# Define o diretório de trabalho
 WORKDIR /
 
-# Copia package.json e package-lock.json
+# Copia todo o conteúdo do projeto
+COPY . .
+
+# Instala as dependências
+RUN npm ci
+
+# Compila a aplicação
+RUN npm run build
+
+# Production stage
+FROM node:18-alpine
+
+# Define o diretório de trabalho
+WORKDIR /
+
+# Copia os arquivos de configuração do projeto
 COPY package*.json ./
 
 # Instala apenas as dependências de produção
-RUN npm install --production
+RUN npm ci --only=production
 
-# Copia a pasta dist do builder
+# Copia os arquivos compilados do estágio anterior
 COPY --from=builder /dist ./dist
 
+# Expõe a porta 5001
 EXPOSE 5001
 
-CMD ["node", "dist/main"]
+# Define as variáveis de ambiente para produção
+ENV NODE_ENV=production
+
+# Comando para iniciar a aplicação
+CMD ["npm", "run", "start:prod"]
