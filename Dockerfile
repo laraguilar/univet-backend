@@ -30,6 +30,7 @@ COPY . ./prisma/
 # Instala apenas as dependências de produção
 RUN npm ci --only=production
 
+RUN npm install dotenv-cli@8.0.0 prisma@6.3.1
 # Gera o cliente Prisma para produção
 
 # Copia os arquivos compilados do estágio anterior
@@ -45,3 +46,4 @@ ENV NODE_ENV=production
 
 # Usa o script de entrypoint ao invés de iniciar direto
 ENTRYPOINT ["./docker-entrypoint.sh"]
+
