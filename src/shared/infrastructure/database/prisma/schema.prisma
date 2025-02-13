@@ -13,4 +13,58 @@ model User {
   name      String?
   password  String
   createdAt DateTime @default(now())
+  pets      Pet[]    @relation("UserPets")
+}
+
+model Pet {
+  id        Int      @id @default(autoincrement())
+  name      String
+  species   String
+  breed     String?
+  birthDate DateTime
+  weight    Float?
+  createdAt DateTime @default(now())
+  ownerId   Int
+  owner     User     @relation("UserPets", fields: [ownerId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_ownerid_user")
+
+  // Optional: Age calculation (can be done in the code or as a computed field)
+  // age      Int      @default(0)  // You can add an age field if needed, but it's typically calculated dynamically
+  Appointment Appointment[]
+}
+
+model Clinic {
+  id             Int              @id @default(autoincrement())
+  name           String
+  cnpj           String
+  zipCode        String
+  street         String
+  number         Int
+  neighborhood   String
+  city           String
+  state          String
+  phone          String?
+  createdAt      DateTime         @default(now())
+  ClinicSchedule ClinicSchedule[]
+  Appointment    Appointment[]
+}
+
+model ClinicSchedule {
+  id        Int      @id @default(autoincrement())
+  clinicId  Int
+  clinic    Clinic   @relation(fields: [clinicId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  dayOfWeek Int
+  openTime  String
+  closeTime String
+  createdAt DateTime @default(now())
+}
+
+model Appointment {
+  id        Int      @id @default(autoincrement())
+  petId     Int
+  pet       Pet      @relation(fields: [petId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  clinicId  Int
+  clinic    Clinic   @relation(fields: [clinicId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  date      DateTime
+  status    String
+  createdAt DateTime @default(now())
 }

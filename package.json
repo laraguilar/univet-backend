@@ -21,8 +21,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "migrate:test": "npx dotenv-cli -e .env.test -- npx prisma migrate dev --schema ./src/shared/infrastructure/database/prisma/schema.prisma",
     "migrate:dev": "npx dotenv-cli -e .env.dev -- npx prisma migrate dev --schema ./src/shared/infrastructure/database/prisma/schema.prisma",
-    "att:prisma": "npx prisma generate --schema src/shared/infrastructure/database/prisma/schema.prisma"
-
+    "att:prisma": "npx prisma generate --schema src/shared/infrastructure/database/prisma/schema.prisma",
+    "prisma:push": "npx prisma db push --schema src/shared/infrastructure/database/prisma/schema.prisma --skip-generate"
   },
   "dependencies": {
     "@faker-js/faker": "^9.3.0",
