@@ -74,10 +74,10 @@ export class UsersController {
 
   @HttpCode(200)
   @Post('login')
-  async login(input: SignInDto) {
+  async login(@Body() input: SignInDto) {
     const user = await this.signinUseCase.execute(input)
     const token = await this.authService.generateJwt(user.id)
-    return { id: user.id, token } // <-- This is returning an object
+    return { id: user.id, ...token }
   }
 
   @Get()
