@@ -144,14 +144,14 @@ export class UserPrismaRepository implements UserRepository.Repository {
   }
 
   protected async _getById(id: number): Promise<UserEntity> {
-    try {
-      const user = await this.prismaService.user.findUnique({
-        where: { id: id },
-      })
+    const user = await this.prismaService.user.findUnique({
+      where: { id: Number(id) },
+    })
 
-      return UserModelMapper.toEntity(user)
-    } catch (error) {
+    if (!user) {
       throw new NotFoundError(`UserModel not found using ID ${id}`)
     }
+
+    return UserModelMapper.toEntity(user)
   }
 }

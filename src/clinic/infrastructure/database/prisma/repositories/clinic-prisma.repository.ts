@@ -105,14 +105,14 @@ export class ClinicPrismaRepository implements ClinicRepository.Repository {
   }
 
   protected async _getById(id: number): Promise<ClinicEntity> {
-    try {
-      const pet = await this.prismaService.clinic.findUnique({
-        where: { id },
-      })
+    const schedule = await this.prismaService.clinic.findUnique({
+      where: { id: Number(id) },
+    })
 
-      return ClinicModelMapper.toEntity(pet)
-    } catch (error) {
+    if (!schedule) {
       throw new NotFoundError(`ClinicModel not found using ID ${id}`)
     }
+
+    return ClinicModelMapper.toEntity(schedule)
   }
 }

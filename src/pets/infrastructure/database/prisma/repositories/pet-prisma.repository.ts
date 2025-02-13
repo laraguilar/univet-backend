@@ -12,7 +12,7 @@ export class PetPrismaRepository implements PetRepository.Repository {
   async findByOwner(ownerId: number): Promise<PetEntity[]> {
     const models = await this.prismaService.pet.findMany({
       where: {
-        ownerId,
+        ownerId: Number(ownerId),
       },
     })
     return models.map(model => PetModelMapper.toEntity(model))
@@ -108,14 +108,14 @@ export class PetPrismaRepository implements PetRepository.Repository {
   }
 
   protected async _getById(id: number): Promise<PetEntity> {
-    try {
-      const pet = await this.prismaService.pet.findUnique({
-        where: { id },
-      })
+    const user = await this.prismaService.pet.findUnique({
+      where: { id: Number(id) },
+    })
 
-      return PetModelMapper.toEntity(pet)
-    } catch (error) {
-      throw new NotFoundError(`PetModel not found using ID ${id}`)
+    if (!user) {
+      throw new NotFoundError(`UserModel not found using ID ${id}`)
     }
+
+    return PetModelMapper.toEntity(user)
   }
 }

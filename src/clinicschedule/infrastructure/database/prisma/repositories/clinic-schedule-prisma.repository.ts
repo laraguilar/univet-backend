@@ -14,7 +14,7 @@ export class ClinicSchedulePrismaRepository
   async listByClinicId(clinicId: number): Promise<ClinicScheduleEntity[]> {
     const models = await this.prismaService.clinicSchedule.findMany({
       where: {
-        clinicId,
+        clinicId: Number(clinicId),
       },
     })
 
@@ -109,14 +109,14 @@ export class ClinicSchedulePrismaRepository
   }
 
   protected async _getById(id: number): Promise<ClinicScheduleEntity> {
-    try {
-      const model = await this.prismaService.clinicSchedule.findUnique({
-        where: { id },
-      })
+    const schedule = await this.prismaService.clinicSchedule.findUnique({
+      where: { id: Number(id) },
+    })
 
-      return ClinicScheduleModelMapper.toEntity(model)
-    } catch (error) {
+    if (!schedule) {
       throw new NotFoundError(`ClinicScheduleModel not found using ID ${id}`)
     }
+
+    return ClinicScheduleModelMapper.toEntity(schedule)
   }
 }
