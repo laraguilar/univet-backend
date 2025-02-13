@@ -1,7 +1,7 @@
 # Dockerfile
 FROM node:18-alpine AS builder
 
-WORKDIR /app
+WORKDIR /
 
 # Copia os arquivos de configuração
 COPY package*.json ./
@@ -22,7 +22,7 @@ RUN npm run build
 # Production stage
 FROM node:18-alpine
 
-WORKDIR /app
+WORKDIR /
 
 # Copia os arquivos de configuração
 COPY package*.json ./
@@ -35,7 +35,7 @@ RUN npm ci --only=production
 RUN npx prisma generate
 
 # Copia os arquivos compilados do estágio anterior
-COPY --from=builder /app/dist ./dist
+COPY --from=builder /dist ./dist
 
 # Script para aguardar o banco e iniciar a aplicação
 COPY docker-entrypoint.sh ./
