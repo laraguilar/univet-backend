@@ -8,16 +8,20 @@ import { AppModule } from './app.module'
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter(),
+    new FastifyAdapter({
+      logger: true, // Adiciona logging para debugar
+    }),
   )
 
   app.enableCors({
-    origin: '*', // Permite qualquer origem (não recomendado para produção)
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type, Authorization',
-    credentials: true, // Se estiver lidando com cookies/sessões
+    origin: true, // Mude para true para aceitar a origem da requisição
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
   })
 
-  await app.listen(process.env.PORT ?? 3000, '0.0.0.0')
+  const port = process.env.PORT ?? 3000
+  await app.listen(port, '0.0.0.0')
+  console.log(`Application is running on: ${await app.getUrl()}`)
 }
 bootstrap()
