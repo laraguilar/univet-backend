@@ -5,7 +5,7 @@ WORKDIR /
 
 # Copia os arquivos de configuração
 COPY package*.json ./
-COPY prisma ./prisma/
+COPY . ./prisma/
 
 # Instala as dependências
 RUN npm ci
@@ -26,7 +26,7 @@ WORKDIR /
 
 # Copia os arquivos de configuração
 COPY package*.json ./
-COPY prisma ./prisma/
+COPY . ./prisma/
 
 # Instala apenas as dependências de produção
 RUN npm ci --only=production
