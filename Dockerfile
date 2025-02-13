@@ -5,7 +5,6 @@ WORKDIR /
 
 # Copia os arquivos de configuração
 COPY package*.json ./
-COPY . ./prisma/
 
 # Instala as dependências
 RUN npm ci
@@ -32,7 +31,6 @@ COPY . ./prisma/
 RUN npm ci --only=production
 
 # Gera o cliente Prisma para produção
-RUN npx prisma generate
 
 # Copia os arquivos compilados do estágio anterior
 COPY --from=builder /dist ./dist
