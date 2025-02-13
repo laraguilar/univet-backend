@@ -44,6 +44,14 @@ export class AppointmentEntity extends Entity<AppointmentProps> {
     return this.props.createdAt
   }
 
+  get clinicId() {
+    return this.props.clinicId
+  }
+
+  get petId() {
+    return this.props.petId
+  }
+
   // Setters
 
   private set status(value: string) {

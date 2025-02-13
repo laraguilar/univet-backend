@@ -76,7 +76,7 @@ export class UsersController {
   @Post('login')
   async login(@Body() signInDto: SignInDto) {
     const output = await this.signinUseCase.execute(signInDto)
-    return this.authService.generateJwt(output.id)
+    return { token: this.authService.generateJwt(output.id), id: output.id }
   }
 
   @Get()

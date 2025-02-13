@@ -22,5 +22,7 @@ export namespace AppointmentRepository {
       SearchResult
     > {
     updateStatus(id: number, status: string): Promise<void>
+    getByPetOwnerId(petOwnerId: number): Promise<AppointmentEntity[]>
+    findByPetIds(petIds: number[]): Promise<AppointmentEntity[]>
   }
 }

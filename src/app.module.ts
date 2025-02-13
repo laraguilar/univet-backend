@@ -7,6 +7,7 @@ import { AuthModule } from './auth/infrastructure/auth.module'
 import { PetsModule } from './pets/infrastructure/pets.module'
 import { ClinicScheduleModule } from './clinicschedule/infrastructure/clinic-schedule.module'
 import { ClinicModule } from './clinic/infrastructure/clinic.module'
+import { AppointmentModule } from './appointment/infrastructure/appointment.module'
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ClinicModule } from './clinic/infrastructure/clinic.module'
     PetsModule,
     ClinicModule,
     ClinicScheduleModule,
+    AppointmentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

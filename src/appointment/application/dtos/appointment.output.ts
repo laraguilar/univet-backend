@@ -1,6 +1,7 @@
 import { AppointmentEntity } from '@/appointment/domain/entities/appointment.entity'
 
 export type AppointmentOutput = {
+  id: number
   date: Date
   status: string
   clinicId: number

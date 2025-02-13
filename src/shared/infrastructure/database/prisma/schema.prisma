@@ -29,6 +29,7 @@ model Pet {
 
   // Optional: Age calculation (can be done in the code or as a computed field)
   // age      Int      @default(0)  // You can add an age field if needed, but it's typically calculated dynamically
+  Appointment Appointment[]
 }
 
 model Clinic {
@@ -44,6 +45,7 @@ model Clinic {
   phone          String?
   createdAt      DateTime         @default(now())
   ClinicSchedule ClinicSchedule[]
+  Appointment    Appointment[]
 }
 
 model ClinicSchedule {
@@ -53,5 +55,16 @@ model ClinicSchedule {
   dayOfWeek Int
   openTime  String
   closeTime String
+  createdAt DateTime @default(now())
+}
+
+model Appointment {
+  id        Int      @id @default(autoincrement())
+  petId     Int
+  pet       Pet      @relation(fields: [petId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  clinicId  Int
+  clinic    Clinic   @relation(fields: [clinicId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  date      DateTime
+  status    String
   createdAt DateTime @default(now())
 }
