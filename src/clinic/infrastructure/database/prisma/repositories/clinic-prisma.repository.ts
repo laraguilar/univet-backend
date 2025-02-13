@@ -1,6 +1,5 @@
 import { NotFoundError } from '@/shared/domain/errors/not-found-error'
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service'
-import { ConflictError } from '@/shared/domain/errors/conflict-error'
 import { ClinicRepository } from '@/clinic/domain/repositories/clinic.repository'
 import { ClinicEntity } from '@/clinic/domain/entities/clinic.entity'
 import { ClinicModelMapper } from '../models/clinic-model.mapper'
